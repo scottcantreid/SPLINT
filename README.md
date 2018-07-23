@@ -4,11 +4,10 @@ Temperature robustness can be achieved in mixed analog/digital computers in the 
 How to use this package:
 
 ## (I) Simulating neuron tuning curves:
-    Use gen_neurons(Nraw, Q, sig, R, del_bad=False) to generate temperature dependent tuning curves of Nraw neurons over a domain of Q input  at R different temperatures. del_bad=True will lead to a slightly smaller neuron yield, as "bad" neurons which rarely fire will be cut out of the neural population. del_bad=True is not recommended.
-    
-      Example:
-      Tarr, A, iin = tempy.gen_neurons(Nraw = 5000, Q = 1000, sig = 0.1, R = 30)
-    
+Use gen_neurons(Nraw, Q, sig, R, del_bad=False) to generate temperature dependent tuning curves of Nraw neurons over a domain of Q input  at R different temperatures. del_bad=True will lead to a slightly smaller neuron yield, as "bad" neurons which rarely fire will be cut out of the neural population. del_bad=True is not recommended
+'''
+Tarr, A, iin = tempy.gen_neurons(Nraw = 5000, Q = 1000, sig = 0.1, R = 30)
+'''    
 ## (II) The quick and easy way of solving for optimal decode vectors for function f:
    ### (A) Least Squares decode vector centered at temperature Tarr[t]
     
