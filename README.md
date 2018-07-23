@@ -11,37 +11,46 @@ Tarr, A, iin = tempy.gen_neurons(Nraw = 5000, Q = 1000, sig = 0.1, R = 30)
 ```
 
 ## (II) The quick and easy way of solving for optimal decode vectors for function f:
-   ### (A) Least Squares decode vector centered at temperature Tarr[t]
-    
-          Example:
-          d_ls = tp.ls_dstar(A, f, sigma, t = t)
+#### (II-A) Least Squares decode vector centered at temperature Tarr[t]
+```  
+d_ls = tp.ls_dstar(A, f, sigma, t = t)
+```
+#### (II-B) LSAT decode vector
+``` 
+d_lsat = (A, f, sigma, Tarr)
+```          
+If you want to quickly compute decode vectors for many different functions, it is recommended that you use the transfomration matrix method, which is explained later.
         
-   ### (B) LSAT decode vector
-        There are multiple ways to doing this, but the simplest is to use the function lsat()
+####  (II-C) Lint Decode Vector
+```
+d_lint = lint(A, f, sigma, Tarr).
+```
+Again, the transformation matrix method is handy for computing decode vectors for many functions.
+#### (II-D) Splint Decode Vector
+```
+d_splint = splint(A, f, sigma, Tarr, k)
+```
+where k is the number of neurons which will have linear-in-temperature weights. The default is to sort neurons by the magnitude of their lint d_0 weights. If you want to use a custom neuron sort, input it as parameter "sorted_neurons." For more control, it is highly recommended to use the transformation matrix method.
         
-          Example:
-          d_lsat = (A, f, sigma, Tarr)
-          
-        If you want to compute decode vectors many times, it is recommended that you use the transfomration matrix method, which is explained later.
+#### (II-E) Quint 
+```
+d_quint = quint(A, f, sigma, Tarr)
+```
         
-  ###  (C) Lint Decode Vector
-        Use d_lint = lint(A, f, sigma, Tarr).
-        
-   ### (D) Splint Decode Vector
-        Use d_splint = splint(A, f, sigma, Tarr, k) where k is the number of neurons which will have linear-in-temperature weights. The default is to sort neurons by the magnitude of their lint d_0 weights. If you want to use a custom neuron sort, input it as parameter "sorted_neurons." For more control, it is highly recommended to use the transformation matrix method.
-        
-   ### (E) Quint 
-        Use d_quint = quint(A, f, sigma, Tarr)
-        
-   ### (F) Squint
-        You could choose to use squint(A, f, sigma, Tarr, k) where k is the number of neurons with quadratic weights. However, it is recommended to use the transformtion matrix method, as the optimal way to choose a sparse population for quint weights is still an open question.
+#### (II-F) Squint
+```
+d_squint = squint(A, f, sigma, Tarr, k)
+```
+Where k is the number of neurons with temperature-dependent weights. This works, however, it is recommended to use the transformtion matrix method, as the optimal way to choose a sparse population for quint weights is still an open question.
         
 ## (III) Transformation matrix method for non-sparse solutions
-    LSAT, Lint, Quint, and polynomial-order Pint weights can all be unified in a simple mathematical framework which characterizes a linear transformation from R^Q, the discretized function space, to R^((P+1)N), the space of P^th polynomial order decode weight coefficients.
-    A temperature-dependent decode vector may be expressed as a polynomial series summation:
+LSAT, Lint, Quint, and polynomial-order Pint weights can all be unified in a simple mathematical framework which characterizes a linear transformation from R^Q, the discretized function space, to R^((P+1)N), the space of P^th polynomial order decode weight coefficients.
     
-      d(T) = d_0 + T d_1 + T^2 d_2 + ... + T^P d_P
-    
+A temperature-dependent decode vector may be expressed as a polynomial series summation:
+\begin{equation}
+d(T) = d_0 + T d_1 + T^2 d_2 + ... + T^P d_P
+\end{equation}
+
     Each coefficient d_i is a vector of length N, where N is the number of neurons in the population. We can create a stacked vector 
     D = [d_0, d_1, ..., d_P]
     
