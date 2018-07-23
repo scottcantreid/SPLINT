@@ -47,9 +47,8 @@ Where k is the number of neurons with temperature-dependent weights. This works,
 LSAT, Lint, Quint, and polynomial-order Pint weights can all be unified in a simple mathematical framework which characterizes a linear transformation from R^Q, the discretized function space, to R^((P+1)N), the space of P^th polynomial order decode weight coefficients.
     
 A temperature-dependent decode vector may be expressed as a polynomial series summation:
-\begin{equation}
-d(T) = d_0 + T d_1 + T^2 d_2 + ... + T^P d_P
-\end{equation}
+
+$d(T) = d_0 + T d_1 + T^2 d_2 + ... + T^P d_P$
 
     Each coefficient d_i is a vector of length N, where N is the number of neurons in the population. We can create a stacked vector 
     D = [d_0, d_1, ..., d_P]
