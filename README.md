@@ -47,24 +47,33 @@ Where k is the number of neurons with temperature-dependent weights. This works,
 LSAT, Lint, Quint, and polynomial-order Pint weights can all be unified in a simple mathematical framework which characterizes a linear transformation from R^Q, the discretized function space, to R^((P+1)N), the space of P^th polynomial order decode weight coefficients.
     
 A temperature-dependent decode vector may be expressed as a polynomial series summation:
+```
+d(T) = d_0 + T d_1 + T^2 d_2 + ... + T^P d_P
+```
+Each coefficient d_i is a vector of length N, where N is the number of neurons in the population. We can create a stacked vector 
+```
+D = [d_0, d_1, ..., d_P]
+```    
+Defined in this way, the solution to the P^th order problem is simply:
+```    
+D = inv(M) G f
+```
 
-$d(T) = d_0 + T d_1 + T^2 d_2 + ... + T^P d_P$
+M is a (P+1)N x (P+1)N symmetric square matrix and G is a (P+1)N x Q matrix.
 
-    Each coefficient d_i is a vector of length N, where N is the number of neurons in the population. We can create a stacked vector 
-    D = [d_0, d_1, ..., d_P]
-    
-    Defined in this way, the solution to the P^th order problem is simply:
-    
-    D = inv(M) G f
-    
-    M is a (P+1)N x (P+1)N symmetric square matrix and G is a (P+1)N x Q matrix.
-    
-    Generating M and G is simple. For the 0th order problem (LSAT), use:
-      M, G = lsat_transform(A, sigma, Tarr)
-    For 1st order (Lint), use:
-      M, G = lint_transform(A, sigma, Tarr)
-    For 2nd order (Quint) and higher (Pint), use:
-      M, G = noint_transform(A, sigma, Tarr, n), where n is the desired polynomial order.
+Generating M and G is simple. For the 0th order problem (LSAT), use:
+```
+M, G = lsat_transform(A, sigma, Tarr)
+```
+For 1st order (Lint), use:
+```
+M, G = lint_transform(A, sigma, Tarr)
+```
+For 2nd order (Quint) and higher (Pint), use:
+```
+M, G = noint_transform(A, sigma, Tarr, P)
+```
+where P is the desired polynomial order.
       
       
         
