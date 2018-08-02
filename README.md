@@ -42,8 +42,16 @@ d_quint = quint(A, f, sigma, Tarr)
 d_squint = squint(A, f, sigma, Tarr, k)
 ```
 Where k is the number of neurons with temperature-dependent weights. This works, however, it is recommended to use the transformtion matrix method, as the optimal way to choose a sparse population for quint weights is still an open question.
+
+## (III) Computing Error
+We now know how to compute decode coefficients *D* for a function *f*. How do we compute the error between our decoded function and the target function?
+
+```
+error = error_t(D, A, f, Tarr)
+```
+*error_t* will return an array of error values for each temperature in Tarr.
         
-## (III) Transformation matrix method for non-sparse solutions
+## (IV) Transformation matrix method for non-sparse solutions
 LSAT, Lint, Quint, and polynomial-order Pint weights can all be unified in a simple mathematical framework which characterizes a linear transformation from R^Q, the discretized function space, to R^((P+1)N), the space of P^th polynomial order decode weight coefficients.
     
 A temperature-dependent decode vector may be expressed as a polynomial series summation:
@@ -74,9 +82,14 @@ For 2nd order (Quint) and higher (Pint), use:
 M, G = noint_transform(A, sigma, Tarr, P)
 ```
 where P is the desired polynomial order.
-      
-      
-        
-        
-    
+
+Once you have generated the transformation matrices for the temperature-dependent tuning curves, you can compute the decode coefficients for function *f* via:
+
+```
+import numpy as np
+import np.linalg.inv as inv
+
+D = inv(M) @ G @ f
+```
+Note: *@* represents matrix multiplication in numpy.
 
