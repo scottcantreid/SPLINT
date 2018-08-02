@@ -93,3 +93,9 @@ D = inv(M) @ G @ f
 ```
 Note: *@* represents matrix multiplication in numpy.
 
+
+## (V) Tranformation Matrix method for sparse solutions (i.e. splint)
+We now know how to solve for decode coefficients given matrices *M* and *G*. How do we look for sparse solutions? In this section, we will talk about the L2 regularization transformation strategy. L1 regularization is under development.
+
+The general strategy is as follows: we choose which neurons we would like to have temperature-dependent weights
+
