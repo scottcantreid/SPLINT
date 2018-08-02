@@ -19,7 +19,7 @@ d_ls = tp.ls_dstar(A, f, sigma, t = t)
 ``` 
 d_lsat = (A, f, sigma, Tarr)
 ```          
-If you want to quickly compute decode vectors for many different functions, it is recommended that you use the transfomration matrix method, which is explained later.
+If you want to quickly compute decode vectors for many different functions, it is recommended that you use the transformation matrix method, which is explained later.
         
 ####  (II-C) Lint Decode Vector
 ```
