@@ -108,3 +108,5 @@ Once we have defined our mask, the solution for decode weights is:
 d_coeffs = inv(M + mask) @ G @ f
 ```
 where M and G are the transformation matrices introduced in the previous section.
+
+This (you should check for yourself) should result in a decode coefficient vector whose components are very close to zero where you specified. From there, you can manually set these components to be exactly zero.
