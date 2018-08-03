@@ -4,7 +4,7 @@ Temperature robustness can be achieved in mixed analog/digital computers in the 
 How to use this package:
 
 ## (I) Simulating neuron tuning curves:
-Use gen_neurons(Nraw, Q, sig, R, del_bad=False) to generate temperature dependent tuning curves of Nraw neurons over a domain of Q input  at R different temperatures. del_bad=True will lead to a slightly smaller neuron yield, as "bad" neurons which rarely fire will be cut out of the neural population. del_bad=True is not recommended
+Use gen_neurons(Nraw, Q, sig, R, del_bad=False) to generate temperature dependent tuning curves of Nraw neurons over a domain of Q input  at R different temperatures. del_bad=True will lead to a slightly smaller neuron yield, as "bad" neurons which rarely fire will be cut out of the neural population. One can compare results between del_bad=True and del_bad=False to see the effect of "bad" neurons. Preliminary results suggest that "bad" neurons are actually quite valuable for temperature robustness and decode accuracy.
 
 ```
 Tarr, A, iin = tempy.gen_neurons(Nraw = 5000, Q = 1000, sig = 0.1, R = 30)
