@@ -47,8 +47,9 @@ Where k is the number of neurons with temperature-dependent weights. This works,
 We now know how to compute decode coefficients *D* for a function *f*. How do we compute the error between our decoded function and the target function?
 
 ```
-error = error_t(D, A, f, Tarr)
+error = error_t(d_coeffs, A, f, Tarr)
 ```
+where d_coeffs is a stacked vector of decode coefficients (i.e. [d0, d1, d2] for a quint solution).
 *error_t* will return an array of error values for each temperature in Tarr.
         
 ## (IV) Transformation matrix method for non-sparse solutions
@@ -60,11 +61,11 @@ d(T) = d_0 + T d_1 + T^2 d_2 + ... + T^P d_P
 ```
 Each coefficient d_i is a vector of length N, where N is the number of neurons in the population. We can create a stacked vector 
 ```
-D = [d_0, d_1, ..., d_P]
+d_coeffs = [d_0, d_1, ..., d_P]
 ```    
 Defined in this way, the solution to the P^th order problem is simply:
 ```    
-D = inv(M) G f
+d_coeffs = inv(M) G f
 ```
 
 M is a (P+1)N x (P+1)N symmetric square matrix and G is a (P+1)N x Q matrix.
@@ -89,7 +90,7 @@ Once you have generated the transformation matrices for the temperature-dependen
 import numpy as np
 import np.linalg.inv as inv
 
-D = inv(M) @ G @ f
+d_coeffs = inv(M) @ G @ f
 ```
 Note: *@* represents matrix multiplication in numpy.
 
@@ -97,5 +98,13 @@ Note: *@* represents matrix multiplication in numpy.
 ## (V) Tranformation Matrix method for sparse solutions (i.e. splint)
 We now know how to solve for decode coefficients given matrices *M* and *G*. How do we look for sparse solutions? In this section, we will talk about the L2 regularization transformation strategy. L1 regularization is under development.
 
-The general strategy is as follows: we choose which neurons we would like to have temperature-dependent weights
+The general strategy is to add a huge penalty (think 10^15 or higher) times the L2 magnitude of the decode coefficients that you want to be zero. For example, if you want a specific neuron's weight to be constant in the Lint framework, then you would penalize that neuron's d1 coefficient.
 
+We can define a "mask" as a diagonal square matrix of size (P+1)D x (P+1)D where P is then polynomial order and D is the number of neurons. The first D diagonal entries correspond to the d0 coefficients, the next D diagonal entries corresond to d1 entries, and so on. For each coefficient that you want to be zero, set the corresponding diagonal entry in the mask to 10^15 or something huge. All other entries should be set to 0.
+
+Once we have defined our mask, the solution for decode weights is:
+
+```
+d_coeffs = inv(M + mask) @ G @ f
+```
+where M and G are the transformation matrices introduced in the previous section.
